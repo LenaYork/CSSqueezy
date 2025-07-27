@@ -147,6 +147,22 @@ document.getElementById('copy-btn').addEventListener('click', () => {
   }, 2000);
 });
 
+document.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.key === 'Enter') {
+    e.preventDefault();
+    
+    const activeTab = document.querySelector('.tab-content:not(.hidden)');
+    if (activeTab.id === 'squeeze-tab') {
+      const input = document.getElementById('input-squeeze').value.trim();
+      if (input) document.getElementById('squeeze-btn').click();
+    } 
+    else if (activeTab.id === 'beautify-tab') {
+      const input = document.getElementById('input-beautify').value.trim();
+      if (input) document.getElementById('beautify-btn').click();
+    }
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   loadFromStorage();
   updateButtons();
