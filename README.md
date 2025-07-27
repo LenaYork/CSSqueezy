@@ -32,7 +32,7 @@
 ---
 
 ## **🌐 Live Demo**  
-🔗 *[GitHub Pages Link](#)* 
+🔗 *[GitHub Pages Link](https://lenayork.github.io/CSSqueezy/)* 
 
 > **Note**: This tool doesn’t validate CSS syntax—it *only reformats text*!  
 
