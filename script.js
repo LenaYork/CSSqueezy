@@ -3,8 +3,38 @@ let savedText = {
   beautify: { input: '', output: '' }
 };
 
+function saveToStorage() {
+  localStorage.setItem('css_data', JSON.stringify({
+    inputSqueeze: document.getElementById('input-squeeze').value,
+    outputSqueeze: document.getElementById('output-squeeze').value,
+    inputBeautify: document.getElementById('input-beautify').value,
+    outputBeautify: document.getElementById('output-beautify').value,
+    activeTab: document.querySelector('.tab-btn.active').dataset.tab
+  }));
+}
+
+function loadFromStorage() {
+  const saved = JSON.parse(localStorage.getItem('css_data'));
+  if (!saved) return;
+  
+  document.getElementById('input-squeeze').value = saved.inputSqueeze || '';
+  document.getElementById('output-squeeze').value = saved.outputSqueeze || '';
+  document.getElementById('input-beautify').value = saved.inputBeautify || '';
+  document.getElementById('output-beautify').value = saved.outputBeautify || '';
+
+  savedText.squeeze.input = saved.inputSqueeze || '';
+  savedText.squeeze.output = saved.outputSqueeze || '';
+  savedText.beautify.input = saved.inputBeautify || '';
+  savedText.beautify.output = saved.outputBeautify || '';
+  
+  if (saved.activeTab === 'beautify') {
+    document.querySelector('.tab-btn[data-tab="beautify"]').click();
+  }
+}
+
 const tabs = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
+
 
 function updateButtons() {
   const squeezeInput = document.getElementById('input-squeeze').value.trim();
@@ -27,25 +57,40 @@ function updateButtons() {
   
   copyBtn.disabled = !hasOutput;
   copyBtn.title = hasOutput ? "Copy to clipboard" : "Nothing to copy";
+
+   saveToStorage();
 }
 
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
-    tabContents.forEach(content => {
-      content.classList.add('hidden');
-    });
+    const activeTab = document.querySelector('.tab-content:not(.hidden)');
+    if (activeTab.id === 'squeeze-tab') {
+      savedText.squeeze.input = document.getElementById('input-squeeze').value;
+      savedText.squeeze.output = document.getElementById('output-squeeze').value;
+    } else {
+      savedText.beautify.input = document.getElementById('input-beautify').value;
+      savedText.beautify.output = document.getElementById('output-beautify').value;
+    }
 
-    tabs.forEach(t => {
-      t.classList.remove('active');
-    });
-
+     saveToStorage();
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    
+    tabContents.forEach(content => content.classList.add('hidden'));
     const tabId = tab.getAttribute('data-tab') + '-tab';
     document.getElementById(tabId).classList.remove('hidden');
 
-    tab.classList.add('active');
-  });
 
-  updateButtons()
+    if (tabId === 'squeeze-tab') {
+      document.getElementById('input-squeeze').value = savedText.squeeze.input;
+      document.getElementById('output-squeeze').value = savedText.squeeze.output;
+    } else {
+      document.getElementById('input-beautify').value = savedText.beautify.input;
+      document.getElementById('output-beautify').value = savedText.beautify.output;
+    }
+
+    updateButtons();
+  });
 });
 
 document.querySelectorAll('textarea').forEach(textarea => {
@@ -103,5 +148,6 @@ document.getElementById('copy-btn').addEventListener('click', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+  loadFromStorage();
   updateButtons();
 });
