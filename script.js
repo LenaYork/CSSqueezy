@@ -1,3 +1,8 @@
+let savedText = {
+  squeeze: { input: '', output: '' },
+  beautify: { input: '', output: '' }
+};
+
 const tabs = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
 
@@ -45,6 +50,56 @@ tabs.forEach(tab => {
 
 document.querySelectorAll('textarea').forEach(textarea => {
   textarea.addEventListener('input', updateButtons);
+});
+
+function minifyCSS(css) {
+  return css
+    .replace(/\/\*[\s\S]*?\*\/|([^:]|^)\/\/.*$/gm, '')
+    .replace(/\s+/g, ' ')
+    .replace(/\s?([{}:;,])\s?/g, '$1')
+    .replace(/;}/g, '}')
+    .trim();
+}
+
+function beautifyCSS(css) {
+  return cssbeautify(css, {
+    indent: '  ',
+    openbrace: 'end-of-line',
+    autosemicolon: true
+  });
+}
+
+document.getElementById('squeeze-btn').addEventListener('click', () => {
+  const input = document.getElementById('input-squeeze').value;
+  const output = minifyCSS(input);
+  document.getElementById('output-squeeze').value = output;
+  savedText.squeeze.output = output;
+  updateButtons();
+});
+
+document.getElementById('beautify-btn').addEventListener('click', () => {
+  const input = document.getElementById('input-beautify').value;
+  const output = beautifyCSS(input);
+  document.getElementById('output-beautify').value = output;
+  savedText.beautify.output = output;
+  updateButtons();
+});
+
+document.getElementById('copy-btn').addEventListener('click', () => {
+  const activeTab = document.querySelector('.tab-content:not(.hidden)');
+  const output = activeTab.querySelector('textarea[readonly]');
+  output.select();
+  document.execCommand('copy');
+  
+  const copyBtn = document.getElementById('copy-btn');
+  const originalHTML = copyBtn.innerHTML;
+  copyBtn.innerHTML = `
+    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+    Copied!
+  `;
+  setTimeout(() => {
+    copyBtn.innerHTML = originalHTML;
+  }, 2000);
 });
 
 document.addEventListener('DOMContentLoaded', () => {
