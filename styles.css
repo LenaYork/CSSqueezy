@@ -45,7 +45,6 @@ a:hover {
 
 h1 {
   text-align: center;
-  margin-bottom: 10px;
   font-size: 2.2rem;
   background: linear-gradient(45deg, #6c5ce7, #00cec9);
   -webkit-background-clip: text;
@@ -57,6 +56,7 @@ h1 {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+  position: relative
 }
 
 .tab-btn {
@@ -173,6 +173,7 @@ footer {
   }
   h1 {
     font-size: 1.8rem;
+    margin-bottom: 5px;
   }
 }
 
@@ -230,4 +231,152 @@ footer {
   border-style: solid;
   border-color: #333 transparent transparent transparent;
   z-index: 10;
+}
+
+/* Стили для переключателя комментариев */
+.toggle-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 45px;
+  height: 45px;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #95a5a6;
+}
+
+.toggle-btn:hover {
+  background: #f8f9fa;
+  transform: translateY(-50%) scale(1.05);
+}
+
+.toggle-btn.active {
+  background: white; 
+  color: #00b894; 
+  border-color: #00b894;
+}
+
+.toggle-btn.active:hover {
+  background: #45a049;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+  .toggle-btn {
+      top: 15px;
+      right: 10px;
+      width: 40px;
+      height: 40px;
+  }
+}
+
+/* Для десктопа - кнопки в ряд */
+@media (min-width: 768px) {
+  .tab-content {
+    position: relative;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    width: 50%;
+    margin: 0 auto;
+  }
+  
+  .copy-btn {
+    position: static !important;
+    margin-top: 10px;
+  }
+  
+  #squeeze-btn,
+  #beautify-btn {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 340px) {
+  h1 {
+    margin-bottom: 15px;
+  }
+
+  .tabs {
+    flex-direction: column;
+  }
+
+  .tabs button {
+    outline: 1px solid silver;
+  }
+
+  .toggle-btn {
+    top: -30px;
+  }
+}
+
+.toggle-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f8f9fa;
+  border-color: #ddd;
+  color: #95a5a6;
+}
+
+.toggle-btn:disabled:hover {
+  transform: translateY(-50%) scale(1);
+  background: #f8f9fa;
+}
+
+/* Кастомные тултипы через data-tooltip */
+#toggleComments[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: auto;
+  right: 0;
+  transform: translateX(0);
+  bottom: 100%;
+  margin-bottom: 8px;
+  white-space: normal;
+  width: 160px;
+  text-align: center;
+  background: linear-gradient(45deg, #6c5ce7, #00cec9);
+  color: white;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+  z-index: 1001;
+}
+
+#toggleComments[data-tooltip]:hover::before {
+  content: "";
+  position: absolute;
+  left: auto;
+  right: 10px;
+  transform: translateX(0);
+  bottom: calc(100% - 5px);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #6c5ce7 transparent transparent transparent;
+  z-index: 1001;
 }
