@@ -47,3 +47,7 @@ For developers who need quick conversions between bundled (e.g., build output) a
 **MIT** – Free to use, modify, and distribute.  
 
 ---
+
+⭐ If you found this tool useful, please consider giving it a star on GitHub! ⭐
+
+"Sometimes the simplest tools save the most time."
